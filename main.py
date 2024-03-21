@@ -38,7 +38,10 @@ percent_change = ((float(prev_day_close) - float(yest_day_close))/float(prev_day
 final_percent_change = round(percent_change, 2)
 print(f"Change is {final_percent_change}%")
 # TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
-
+if final_percent_change > 5:
+    print("Get news")
+else:
+    print("No news here")
 ## STEP 2: https://newsapi.org/
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
 
