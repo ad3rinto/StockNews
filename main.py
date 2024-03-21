@@ -2,14 +2,13 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 import requests
-load_dotenv()
 
+load_dotenv()
 
 STOCK_NAME = "TSLA"
 COMPANY_NAME = "Tesla Inc"
-TODAY = datetime.now().strftime("%Y-%m-%d")
-PREV_DAY = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
-
+YEST_DAY = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
+PREV_DAY = (datetime.now() - timedelta(2)).strftime("%Y-%m-%d")
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 PARAMS = {
@@ -23,8 +22,10 @@ PARAMS = {
 r = requests.get(STOCK_ENDPOINT, params=PARAMS)
 r.raise_for_status()
 prev_day_close = r.json()["Time Series (Daily)"][PREV_DAY]['4. close']
-print(prev_day_close)
-
+yest_day_close = r.json()["Time Series (Daily)"][YEST_DAY]['4. close']
+price_change = float(prev_day_close) - float(yest_day_close)
+real_price_change = abs(round(price_change, 2))
+print(f"Price change ia ${real_price_change}")
 
 # TODO 1. - Get yesterday's closing stock price. Hint: You can perform list comprehensions on Python dictionaries. e.g. [new_value for (key, value) in dictionary.items()]
 
@@ -33,7 +34,9 @@ print(prev_day_close)
 # TODO 3. - Find the positive difference between 1 and 2. e.g. 40 - 20 = -20, but the positive difference is 20. Hint: https://www.w3schools.com/python/ref_func_abs.asp
 
 # TODO 4. - Work out the percentage difference in price between closing price yesterday and closing price the day before yesterday.
-
+percent_change = ((float(prev_day_close) - float(yest_day_close))/float(prev_day_close))*100
+final_percent_change = round(percent_change, 2)
+print(f"Change is {final_percent_change}%")
 # TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
 
 ## STEP 2: https://newsapi.org/
