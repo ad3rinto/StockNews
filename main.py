@@ -30,6 +30,7 @@ r = requests.get(STOCK_ENDPOINT, params=PARAMS)
 r.raise_for_status()
 prev_day_close = r.json()["Time Series (Daily)"][PREV_DAY]['4. close']
 yest_day_close = r.json()["Time Series (Daily)"][YEST_DAY]['4. close']
+print(prev_day_close)
 price_change = float(prev_day_close) - float(yest_day_close)
 real_price_change = abs(round(price_change, 2))
 print(f"Price change ia ${real_price_change}")
@@ -44,10 +45,10 @@ print(f"Price change ia ${real_price_change}")
 percent_change = ((float(prev_day_close) - float(yest_day_close)) / float(prev_day_close)) * 100
 final_percent_change = round(percent_change, 2)
 print(f"Change is {final_percent_change}%")
-# TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
+# # TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
 if final_percent_change < 5:
     newsapi = NewsApiClient(api_key=os.environ.get("NEWS_KEY"))
-    top_headlines = newsapi.get_top_headlines(q="binance", sources="bbc-news,the-verge"
+    top_headlines = newsapi.get_top_headlines(q=COMPANY_NAME, sources="bbc-news,the-verge"
                                               , language="en")
     list_of_articles = (top_headlines["articles"])
     for article in list_of_articles:
