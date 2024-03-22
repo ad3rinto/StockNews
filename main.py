@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 import requests
+from newsapi import NewsApiClient
 
 load_dotenv()
 
@@ -11,12 +12,18 @@ YEST_DAY = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
 PREV_DAY = (datetime.now() - timedelta(2)).strftime("%Y-%m-%d")
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
+
 PARAMS = {
     "function": "TIME_SERIES_DAILY",
     "symbol": STOCK_NAME,
     "apikey": os.environ.get("ALPHA_KEY")
 }
 
+PARAMS2 = {
+    "q": "Tesla Inc",
+    "sources": "bbc-news, the-verge",
+    "language": "eng"
+}
 ## STEP 1: Use https://www.alphavantage.co/documentation/#daily
 # When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 r = requests.get(STOCK_ENDPOINT, params=PARAMS)
@@ -34,12 +41,17 @@ print(f"Price change ia ${real_price_change}")
 # TODO 3. - Find the positive difference between 1 and 2. e.g. 40 - 20 = -20, but the positive difference is 20. Hint: https://www.w3schools.com/python/ref_func_abs.asp
 
 # TODO 4. - Work out the percentage difference in price between closing price yesterday and closing price the day before yesterday.
-percent_change = ((float(prev_day_close) - float(yest_day_close))/float(prev_day_close))*100
+percent_change = ((float(prev_day_close) - float(yest_day_close)) / float(prev_day_close)) * 100
 final_percent_change = round(percent_change, 2)
 print(f"Change is {final_percent_change}%")
 # TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
-if final_percent_change > 5:
-    print("Get news")
+if final_percent_change < 5:
+    newsapi = NewsApiClient(api_key=os.environ.get("NEWS_KEY"))
+    top_headlines = newsapi.get_top_headlines(q="binance", sources="bbc-news,the-verge"
+                                              , language="en")
+    list_of_articles = (top_headlines["articles"])
+    for article in list_of_articles:
+        print(article["title"], article['url'])
 else:
     print("No news here")
 ## STEP 2: https://newsapi.org/
