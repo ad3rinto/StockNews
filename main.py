@@ -35,17 +35,17 @@ price_change = float(prev_day_close) - float(yest_day_close)
 real_price_change = abs(round(price_change, 2))
 print(f"Price change ia ${real_price_change}")
 
-# TODO 1. - Get yesterday's closing stock price. Hint: You can perform list comprehensions on Python dictionaries. e.g. [new_value for (key, value) in dictionary.items()]
+# - Get yesterday's closing stock price. Hint: You can perform list comprehensions on Python dictionaries. e.g. [new_value for (key, value) in dictionary.items()]
 
-# TODO 2. - Get the day before yesterday's closing stock price
+#. - Get the day before yesterday's closing stock price
 
-# TODO 3. - Find the positive difference between 1 and 2. e.g. 40 - 20 = -20, but the positive difference is 20. Hint: https://www.w3schools.com/python/ref_func_abs.asp
+#. - Find the positive difference between 1 and 2. e.g. 40 - 20 = -20, but the positive difference is 20. Hint: https://www.w3schools.com/python/ref_func_abs.asp
 
-# TODO 4. - Work out the percentage difference in price between closing price yesterday and closing price the day before yesterday.
+#  - Work out the percentage difference in price between closing price yesterday and closing price the day before yesterday.
 percent_change = ((float(prev_day_close) - float(yest_day_close)) / float(prev_day_close)) * 100
 final_percent_change = round(percent_change, 2)
 print(f"Change is {final_percent_change}%")
-# # TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
+# # . - If TODO4 percentage is greater than 5 then print("Get News").
 if final_percent_change < 5:
     newsapi = NewsApiClient(api_key=os.environ.get("NEWS_KEY"))
     top_headlines = newsapi.get_top_headlines(q=COMPANY_NAME, sources="bbc-news,the-verge"
@@ -58,9 +58,9 @@ else:
 ## STEP 2: https://newsapi.org/
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
 
-# TODO 6. - Instead of printing ("Get News"), use the News API to get articles related to the COMPANY_NAME.
+# - Instead of printing ("Get News"), use the News API to get articles related to the COMPANY_NAME.
 
-# TODO 7. - Use Python slice operator to create a list that contains the first 3 articles. Hint: https://stackoverflow.com/questions/509211/understanding-slice-notation
+#. - Use Python slice operator to create a list that contains the first 3 articles. Hint: https://stackoverflow.com/questions/509211/understanding-slice-notation
 
 
 ## STEP 3: Use twilio.com/docs/sms/quickstart/python
