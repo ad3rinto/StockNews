@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 import requests
 from newsapi import NewsApiClient
 from stock_file import data
+from twilio.rest import Client
+
+
 
 load_dotenv()
 
