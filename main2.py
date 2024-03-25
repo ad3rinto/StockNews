@@ -8,29 +8,31 @@ from stock_file import data
 load_dotenv()
 
 STOCK_NAME = "TSLA"
-COMPANY_NAME = "Tesla Inc"
-YEST_DAY = (datetime.now() - timedelta(3)).strftime("%Y-%m-%d")
-PREV_DAY = (datetime.now() - timedelta(4)).strftime("%Y-%m-%d")
+COMPANY_NAME = "apple"
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 
-PARAMS = {
-    "function": "TIME_SERIES_DAILY",
-    "symbol": STOCK_NAME,
-    "apikey": os.environ.get("ALPHA_KEY")
-}
-
-PARAMS2 = {
-    "q": "Tesla Inc",
-    "sources": "bbc-news, the-verge",
-    "language": "eng"
-}
+# PARAMS = {
+#     "function": "TIME_SERIES_DAILY",
+#     "symbol": STOCK_NAME,
+#     "apikey": os.environ.get("ALPHA_KEY")
+# }
+#
+# PARAMS2 = {
+#     "q": "Tesla Inc",
+#     "sources": "bbc-news, the-verge",
+#     "language": "eng"
+# }
 # STEP 1: Use https://www.alphavantage.co/documentation/#daily
 # When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-r = requests.get(STOCK_ENDPOINT, params=PARAMS)
-r.raise_for_status()
-prev_day_close = r.json()["Time Series (Daily)"][PREV_DAY]['4. close']
-yest_day_close = r.json()["Time Series (Daily)"][YEST_DAY]['4. close']
+# r = requests.get(STOCK_ENDPOINT, params=PARAMS)
+# r.raise_for_status()
+list_of_data = [day for day in data.values()][1]
+actual_list = [value for value in list_of_data.values()]
+
+prev_day_close = actual_list[0]['4. close']
+yest_day_close = actual_list[1]['4. close']
+print(prev_day_close, yest_day_close)
 
 price_change = float(prev_day_close) - float(yest_day_close)
 real_price_change = abs(round(price_change, 2))
@@ -46,7 +48,7 @@ print(f"Price change is ${real_price_change}")
 percent_change = ((float(prev_day_close) - float(yest_day_close)) / float(prev_day_close)) * 100
 final_percent_change = round(percent_change, 2)
 print(f"Change is {final_percent_change}%")
-# # . - If TODO4 percentage is greater than 5 then print("Get News").
+# # # . - If TODO4 percentage is greater than 5 then print("Get News").
 if final_percent_change < 5:
     newsapi = NewsApiClient(api_key=os.environ.get("NEWS_KEY"))
     top_headlines = newsapi.get_top_headlines(q=COMPANY_NAME, sources="bbc-news,the-verge"
