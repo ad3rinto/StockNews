@@ -6,8 +6,6 @@ from newsapi import NewsApiClient
 from stock_file import data
 from twilio.rest import Client
 
-
-
 load_dotenv()
 
 STOCK_NAME = "TSLA"
@@ -58,7 +56,19 @@ if final_percent_change < 5:
                                               , language="en")
     list_of_articles = (top_headlines["articles"])
     for article in list_of_articles:
-        print(article["title"], article['url'])
+        account_sid = os.environ.get('ACC_SID')
+        auth_token = os.environ.get('AUTH_TOKEN')
+        client = Client(account_sid, auth_token)
+
+        message = client.messages \
+            .create(
+            body=f"{article["title"]}, {article["url"]}",
+            from_='+447488879613',
+            to='+447746302442'
+        )
+
+        print(message.sid)
+
 else:
     print("No news here")
 ## STEP 2: https://newsapi.org/
