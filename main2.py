@@ -62,10 +62,10 @@ if final_percent_change < 5:
 
         message = client.messages \
             .create(
-            body=f"{article["title"]}, {article["url"]}",
+            body=f"{article["title"]}, {article["description"]}",
             from_='+447488879613',
             to='+447746302442'
-        )
+            )
 
         print(message.sid)
 
